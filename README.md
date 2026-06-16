@@ -1,26 +1,37 @@
 # Aegis Health - Advanced Clinical Intelligence Matrix
 
-Aegis Health is an enterprise-grade AI-powered healthcare ecosystem that fuses Deep Learning architectures, Natural Language Processing (NLP), and Explainable AI (XAI) to deliver predictive diagnostics and clinical tracking metrics. 
+Aegis Health is an enterprise-grade AI-powered healthcare platform engineered to track patient health trajectories, analyze complex symptoms, and project systemic medical risk profiles. By combining an asynchronous, high-performance API gateway with Deep Learning, Natural Language Processing, and Explainable AI (XAI) frameworks, the platform turns unstructured clinical interactions and complex biometric streams into actionable, transparent diagnostic insights.
 
 ---
 
-## 🔬 Core AI & Architectural Engineering Explained
+## 🏗️ System Architecture
 
-### 1. Multi-Disease Prediction Engine
-The core diagnostic module utilizes high-dimensional neural layer pathways to process structural biometric inputs. Rather than relying on simple linear evaluations, the engine parses interconnected diagnostic vectors (e.g., historical vitals, lab markers, and genetic vulnerabilities) to map cross-disease correlations. The prediction node outputs a unified, multi-label diagnostic risk probability vector via dense classification heads.
-
-### 2. NLP Symptom Analysis
-The clinical text interface uses advanced Natural Language Processing to bridge the gap between unstructured patient prose and formal clinical vocabulary. When a patient describes their condition in everyday terms, the parsing pipeline runs entity extraction and token-sequence normalization to map everyday descriptions to standardized medical concepts (such as SNOMED-CT or ICD-10 terminologies).
-- **Text Parsing Vector Execution:**
-  $$\vec{s} = \text{Softmax}(\mathbf{W}_n \cdot \text{TransformerEncoder}([\text{token}_1, \dots, \text{token}_m]))$$
-
-### 3. Time-Series Forecasting
-To track chronic disease trajectories, the system utilizes sequential tracking networks (LSTM/GRU layers) to process continuous biometric telemetry. The network captures deep temporal dependencies and historical trend lines across rolling time windows. This allows the system to predict shifts in physiological states up to 72 hours before acute clinical events occur.
+The application relies on a decoupled, containerized network structure to isolate client requests, backend orchestration logic, and dedicated computational nodes.
 
 ```mermaid
-graph LR
-    classDef step fill:#fff,stroke:#475569,color:#1e293b,stroke-width:2px;
-    A["Raw Biometric Stream <br> (Vitals Telemetry)"]:::step --> B["Sliding Window Filter <br> (Feature Scaling)"]:::step
-    B --> C["LSTM Recurrent Layers <br> (Temporal Feature Extraction)"]:::step
-    C --> D["Dense Vector Reduction <br> (State Regression)"]:::step
-    D --> E["72-Hour Prognostic <br> Risk Index Output"]:::step
+graph TD
+    classDef client fill:#3498db,stroke:#2980b9,color:#fff,stroke-width:2px;
+    classDef server fill:#2ecc71,stroke:#27ae60,color:#fff,stroke-width:2px;
+    classDef node fill:#eaedf1,stroke:#cbd5e1,color:#2c3e50,stroke-width:1px;
+
+    subgraph Client_Side [Client-Side Browser]
+        ReactUI["React UI Dashboard <br> (http://localhost:3000)"]:::client
+    end
+
+    subgraph Server_Side [Server-Side Docker Node]
+        FastAPI["FastAPI Engine (Uvicorn) <br> ([http://127.0.0.1:8000](http://127.0.0.1:8000))"]:::server
+        Router1["APIRouter <br> (Metrics)"]:::node
+        Router2["APIRouter <br> (Tracker)"]:::node
+    end
+
+    subgraph Operations [Target Engine Nodes]
+        ML["ML Pipeline Node <br> (Inference/Simulation)"]:::node
+        DB["Data Storage Node <br> (Observation Logging)"]:::node
+    end
+
+    ReactUI -->|Axios HTTP POST /predict/timeseries| FastAPI
+    ReactUI -->|Axios HTTP POST /symptoms/log| FastAPI
+    FastAPI --> Router1
+    FastAPI --> Router2
+    Router1 --> ML
+    Router2 --> DB
