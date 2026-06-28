@@ -46,6 +46,6 @@ volumes:
 - [ ] Set up MongoDB backups (daily snapshot)
 - [ ] Enable error tracking (Sentry)
 
-## Health checks
+
 - Backend: `GET /api/` → `{"app":"Aegis Health","status":"ok"}`
 - Frontend: `GET /` → landing page renders
